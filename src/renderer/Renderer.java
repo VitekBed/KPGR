@@ -42,7 +42,9 @@ public class Renderer {
     public void clear()
     {
         raster.clear();
-        line(0,15,raster.getWidth(),15,Color.RED);
+        line(0,15,raster.getWidth(),15,Color.BLACK);
+        if (inlineTextString != null)
+            raster.DrawText(inlineTextString,10,12,Color.BLACK);
     }
     private String inlineTextString;
     public void setInlineTextString ( String text)

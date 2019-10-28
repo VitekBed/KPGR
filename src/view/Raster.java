@@ -52,5 +52,11 @@ public class Raster extends JPanel {
         if (x>0 &&x<img.getWidth() && y>0 && y<img.getHeight())
         img.setRGB(x,y,color.getRGB());
     }
-    
+    public void DrawText(String text, int x, int y, Color color)
+    {
+        Color oldColor = g.getColor();
+        g.setColor(color);
+        g.drawString(text, x, y);
+        g.setColor(oldColor);
+    }
 }
