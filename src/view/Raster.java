@@ -10,7 +10,7 @@ public class Raster extends JPanel {
 
     private final BufferedImage img; // objekt pro zápis pixelů
     private final Graphics g; // objekt nad kterým jsou k dispozici grafické funkce
-    private static final int FPS = 1000 / 30;
+    private static final int FPS = 1000 / 60;
 
     public Raster() {
         setPreferredSize(new Dimension(800, 600));
@@ -43,13 +43,14 @@ public class Raster extends JPanel {
         g.fillRect(0, 0, 800, 600);
     }
 
-    public void DrawPixel(double x, double y, int color)
+    public void DrawPixel(double x, double y, Color color)
     {
         DrawPixel((int)Math.floor(x),(int)Math.floor(y),color);
     }
-    public void DrawPixel(int x, int y, int color)
+    public void DrawPixel(int x, int y, Color color)
     {
-        img.setRGB(x,y,color);
+        if (x>0 &&x<img.getWidth() && y>0 && y<img.getHeight())
+        img.setRGB(x,y,color.getRGB());
     }
-
+    
 }

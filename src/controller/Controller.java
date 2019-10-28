@@ -1,8 +1,8 @@
 package controller;
 
-import renderer.Renderer;
 import view.Raster;
 import model.Point;
+import renderer.*;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -32,24 +32,24 @@ public class Controller {
         raster.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.isControlDown())
+                if (e.isControlDown())  //pokud držím CTRL kreslím úsečku
                 {
-                    if (points.size() == 0)
+                    if (points.size() == 0) //první kliknutí
                     {
-                        points.add(new Point(e.getX(),e.getY()));
+                        points.add(new Point(e.getX(),e.getY()));   
                     }
-                    else
+                    else    //druhý kliknutí
                     {
                         points.add(new Point(e.getX(),e.getY()));
                         renderer.drawPolygon2(points);
                         points.clear();
                     }
                 }
-                else
+                else    //pokud CTRL nedržím
                 {
-                    if (e.getButton() == MouseEvent.BUTTON1)
+                    if (e.getButton() == MouseEvent.BUTTON1)    //levý klikání přidává body
                         points.add(new Point(e.getX(),e.getY()));
-                    else {
+                    else {  //nelevým vykreslím polygon
                         renderer.clear();
                         renderer.drawPolygon(points);
                         points.clear();
