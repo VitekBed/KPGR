@@ -36,10 +36,25 @@ public class Controller {
                         renderer.clear();
                         renderer.lineDDA(400,300,e.getX(),e.getY());
                         break;
-                    case LINE:
+                    /*case LINE:
                         renderer.clear();
                         if (points.size() > 0)
                             renderer.lineDDA((int)(points.get(0).getX()),(int)(points.get(0).getY()),e.getX(),e.getY());
+                        break;*/
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                switch (nastaveni)
+                {
+                    case LINE:
+                        if (points.size()==1) {
+                            renderer.clear();
+                            renderer.lineDDA(points.get(0), new Point(e.getX(), e.getY()));
+                        }
                         break;
                     default:
                         break;
@@ -52,7 +67,10 @@ public class Controller {
                 switch (nastaveni)
                 {
                     case LINE:
-                        if (points.size() > 0) points.clear();
+                        if (points.size() > 1) {
+                            points.clear();
+                            renderer.clear();
+                        }
                         points.add(new Point(e.getX(),e.getY()));
                         break;
                     case POLYGON:

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.List;
 
 import model.*;
+import model.Point;
 import view.*;
 
 public class Renderer {
@@ -28,7 +29,9 @@ public class Renderer {
         DDALine line = new DDALine(startX, startY, endX, endY);
         line.drawLine(this);
     }
-
+    public void lineDDA(Point point1, Point point2) {
+        lineDDA((int)point1.getX(),(int)point1.getY(),(int)point2.getX(),(int)point2.getY());
+    }
 
     private void Obdelnik(int startX, int startY, int endX, int endY)
     {
@@ -71,5 +74,6 @@ public class Renderer {
         raster.DrawPixel(x,y,color);
     }
 
-    
+
+
 }
