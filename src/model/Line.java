@@ -25,7 +25,15 @@ public abstract class Line
         this.endY = endY;
         this.color = Color.BLACK;
     }
-    
+
+    public Line(Point point1, Point point2) {
+        this(point1,point2,Color.BLACK);
+    }
+
+    public Line(Point point1, Point point2, Color color) {
+        this((int)point1.getX(), (int)point1.getY(),(int)point2.getX(),(int)point2.getY(),color);
+    }
+
     public final int getStartX()
     {
         return startX;

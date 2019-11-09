@@ -37,4 +37,12 @@ public class Point {
         double y = this.x * Math.sin(angel) + this.y * Math.cos(angel);
         return new Point(x,y);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Point )) return false;
+        Point point = (Point)obj;
+        if (point.getX() == this.getX() && point.getY() == this.getY()) return true;
+        return false;
+    }
 }

@@ -8,6 +8,15 @@ public class BasicLine extends Line {
     public BasicLine(int startX, int startY, int endX, int endY, Color color) {
         super(startX, startY, endX, endY, color);
     }
+
+    public BasicLine(Point point1, Point point2) {
+        super(point1, point2);
+    }
+
+    public BasicLine(Point point1, Point point2, Color color) {
+        super(point1, point2, color);
+    }
+
     public BasicLine(int startX, int startY, int endX, int endY) {
         super(startX, startY, endX, endY);
     }

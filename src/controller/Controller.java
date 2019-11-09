@@ -4,7 +4,6 @@ import view.Raster;
 import model.Point;
 import renderer.*;
 import enume.*;
-import java.awt.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -108,6 +107,8 @@ public class Controller {
                         nastaveni = Uloha.LINE;
                         renderer.clear();
                         points.clear();
+                        break;
+                    case '2':
                         break;
                 }
 				

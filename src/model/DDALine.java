@@ -12,6 +12,14 @@ public class DDALine extends Line {
         super(startX, startY, endX, endY, color);
     }
 
+    public DDALine(Point point1, Point point2) {
+        super(point1, point2);
+    }
+
+    public DDALine(Point point1, Point point2, Color color) {
+        super(point1, point2, color);
+    }
+
     float k = (float)(endY-startY)/(float)(endX-startX);
     float q = (startY - k * startX);
 
