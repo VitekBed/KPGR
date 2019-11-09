@@ -59,4 +59,8 @@ public class Raster extends JPanel {
         g.drawString(text, x, y);
         g.setColor(oldColor);
     }
+    public void drawLine(double x, double y, double x1, double y1, Color color) {
+        g.setColor(color);
+        g.drawLine((int)Math.round(x),(int)Math.round(y),(int)Math.round(x1),(int)Math.round(y1));
+    }
 }
