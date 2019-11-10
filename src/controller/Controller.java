@@ -1,3 +1,5 @@
+//VBE #4
+
 package controller;
 
 import view.Raster;
@@ -82,7 +84,13 @@ public class Controller {
 
             private void polygon(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1)    //levý klikání přidává body
-                    points.add(new Point(e.getX(),e.getY()));
+                {   //VBE #4
+                    if (points.size() == 0) renderer.clear();   //vymažu obrazovku pro další kreslení
+                    points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
+                    if (points.size() > 1) {    //pokud mám alespoň dva body, vykreslím čáru mezi posledníma dvěma
+                        renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
+                    }
+                }
                 else {  //nelevým vykreslím polygon
                     renderer.clear();
                     renderer.drawPolygon(points);
@@ -101,6 +109,7 @@ public class Controller {
                         renderer.setInlineTextString("Čára ze středu");
                         nastaveni = Uloha.CENTER_LINE;
                         renderer.clear();
+                        points.clear();
                         break;
                     case '1':
                         renderer.setInlineTextString("čára mezi body | pravým klikem urči počáteční bod čáry, levým nakresli čáru");
@@ -108,7 +117,11 @@ public class Controller {
                         renderer.clear();
                         points.clear();
                         break;
-                    case '2':
+                    case '2':   //VBE #4
+                        renderer.setInlineTextString("polygon | levým tlačítem přidávej body, pravým uzavři polygon");
+                        nastaveni = Uloha.POLYGON;
+                        renderer.clear();
+                        points.clear();
                         break;
                 }
 				
