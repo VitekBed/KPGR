@@ -22,6 +22,16 @@ public class Polygon {
         this(Color.BLACK,Color.ORANGE);
     }
 
+    public Polygon(List<Point> points) {
+        this.points = points;
+    }
+
+    public Polygon(List<Point> points, Color lineColor, Color color) {
+        this.points = points;
+        this.lineColor = lineColor;
+        this.color = color;
+    }
+
     public Polygon(Color lineColor, Color color) {
         this.lineColor = lineColor;
         this.color = color;

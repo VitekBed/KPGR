@@ -49,12 +49,19 @@ public class Controller {
 
             @Override
             public void mouseMoved(MouseEvent e) {
+                if (points == null || nastaveni == null) return;
                 switch (nastaveni)
                 {
                     case LINE:
                         if (points.size()==1) {
                             renderer.clear();
                             renderer.lineDDA(points.get(0), new Point(e.getX(), e.getY()));
+                        }
+                        break;
+                    case POLYGON2:
+                        if (points.size() == 2) {
+                            renderer.clear();
+                            renderer.drawPolygon2(points.get(0), points.get(1), new Point(e.getX(), e.getY()));
                         }
                         break;
                     default:
@@ -77,8 +84,20 @@ public class Controller {
                     case POLYGON:
                         polygon(e);
                         break;
+                    case POLYGON2:
+                        nuhelnik(e);
+                        break;
                     default:
                         break;
+                }
+            }
+
+            private void nuhelnik(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1)    //levý klikání přidává body
+                {
+                    if (points.size() == 0) renderer.clear();   //vymažu obrazovku pro další kreslení
+                    if (points.size() > 2) return;  //pokud už mám dva body další mě nazajímají
+                    points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
                 }
             }
 
@@ -123,6 +142,11 @@ public class Controller {
                         renderer.clear();
                         points.clear();
                         break;
+                    case '3':
+                        renderer.setInlineTextString("pravidelný n-úhelník | levým kliknutím určete střed a poté jeden z vrcholů, pravým potvrď");
+                        nastaveni = Uloha.POLYGON2;
+                        renderer.clear();
+                        points.clear();
                 }
 				
 			}

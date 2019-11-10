@@ -3,5 +3,6 @@ package enume;
 public enum Uloha {
     CENTER_LINE,
     LINE,
-    POLYGON
+    POLYGON,
+    POLYGON2;
 }
