@@ -1,3 +1,4 @@
+//VBE #9
 package view;
 
 import javax.swing.*;
@@ -62,5 +63,20 @@ public class Raster extends JPanel {
     public void drawLine(double x, double y, double x1, double y1, Color color) {
         g.setColor(color);
         g.drawLine((int)Math.round(x),(int)Math.round(y),(int)Math.round(x1),(int)Math.round(y1));
+    }
+
+    public void drawRectangle(int x, int y, int x1, int y1, Color color) {  //VBE #9
+
+        g.setColor(color);
+        g.fillRect(x,y,x1-x,y1-y);
+
+    }
+    public void drawRectangle(int x, int y, int w, int h, Color color, boolean b) { //VBE #9
+        if (b) {
+            drawRectangle(x,y,x+w,y+h,color);
+        }
+        else {
+            drawRectangle(x,y,w,h,color);
+        }
     }
 }

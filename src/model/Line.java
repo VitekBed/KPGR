@@ -18,6 +18,11 @@ public abstract class Line
         this.endY = endY;
         this.color = color;
     }
+
+    /**
+     * @deprecated Use Line(int startX, int startY, int endX, int endY, Color color) instead
+     */
+    @Deprecated(forRemoval = true)
     public Line(int startX, int startY, int endX, int endY) {
         this.startX = startX;
         this.startY = startY;
@@ -26,6 +31,10 @@ public abstract class Line
         this.color = Color.BLACK;
     }
 
+    /**
+     * @deprecated Use Line(Point point1, Point point2, Color color) instead
+     */
+    @Deprecated(forRemoval = true)
     public Line(Point point1, Point point2) {
         this(point1,point2,Color.BLACK);
     }

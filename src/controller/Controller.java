@@ -1,4 +1,4 @@
-//VBE #4
+//VBE #4 //VBE #9
 
 package controller;
 
@@ -7,6 +7,7 @@ import model.Point;
 import renderer.*;
 import enume.*;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -19,6 +20,13 @@ public class Controller {
     private java.util.List<Point> points;
     private Uloha nastaveni;
     private Algoritmus algoritmus;
+    //-v- VBE #9
+    private Color barva = Color.RED;    //VBE #9 slouží k uchování barevné složky, kterou teď chci nastavovat
+    private int r = 100;
+    private int g = 0;
+    private int b = 0;
+    private final int delta = 10;   //skoky při změně barvy
+    //-^- VBE #9
 
     public Controller(Raster raster) {
         this.renderer = new Renderer(raster);
@@ -147,20 +155,81 @@ public class Controller {
                         nastaveni = Uloha.POLYGON2;
                         renderer.clear();
                         points.clear();
+                        break;
+                    //-v- nastavování barev VBE #9
+                    case 'r':
+                        barva = Color.RED;
+                        renderer.showColor(barva);
+                        break;
+                    case 'g':
+                        barva = Color.GREEN;
+                        renderer.showColor(barva);
+                        break;
+                    case 'b':
+                        barva = Color.BLUE;
+                        renderer.showColor(barva);
+                        break;
                 }
 				
 			}
 
 			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
+			public void keyPressed(KeyEvent e) {    //VBE #9
+				switch (e.getKeyChar())
+                {
+                    case '+':
+                        barvaAdd();
+                        renderer.showColor(barva);
+                        break;
+                    case '-':
+                        barvaSubrtact();
+                        renderer.showColor(barva);
+                        break;
+                }
 			}
 
-			@Override
+            private void barvaSubrtact() {  //VBE #9
+                switch (barva.getRGB())
+                {
+                    case -65536:    //RED
+                        r = (renderer.getColor().getRed()-delta);
+                        break;
+                    case -16711936:       //GREEN
+                        g = (renderer.getColor().getGreen()-delta);
+                        break;
+                    case -16776961:     //BLUE
+                        b = (renderer.getColor().getBlue()-delta);
+                        break;
+                }
+                if (r<0) r = 0;
+                if (g<0) g = 0;
+                if (b<0) b = 0;
+                renderer.setColor(new Color(r,g,b));
+            }
+
+            private void barvaAdd() {   //VBE #9
+                switch (barva.getRGB())
+                {
+                    case -65536:    //RED
+                        r = (renderer.getColor().getRed()+delta);
+                        break;
+                    case -16711936:       //GREEN
+                        g = (renderer.getColor().getGreen()+delta);
+                        break;
+                    case -16776961:     //BLUE
+                        b = (renderer.getColor().getBlue()+delta);
+                        break;
+                }
+                if (r>255) r = 255;
+                if (g>255) g = 255;
+                if (b>255) b = 255;
+                renderer.setColor(new Color(r,g,b));
+            }
+
+
+            @Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
+
 			}
             
         }

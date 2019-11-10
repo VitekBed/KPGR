@@ -1,4 +1,4 @@
-//VBE #5
+//VBE #5 //VBE #9
 
 package renderer;
 
@@ -15,6 +15,7 @@ import view.*;
 public class Renderer {
 
     private final Raster raster;
+    private Color color = Color.RED;    //VBE #9 aktuální nastavená barva pro kreslení
 
     public Renderer(Raster raster) {
         this.raster = raster;
@@ -23,15 +24,15 @@ public class Renderer {
         //line(4, 4, 20, 38);
     }
 
-    public void line(int startX, int startY, int endX, int endY, Color color)
+    public void line(int startX, int startY, int endX, int endY)    //VBE #9 odebrán Color color
     {
-        BasicLine line = new BasicLine(startX, startY, endX, endY, color);
+        BasicLine line = new BasicLine(startX, startY, endX, endY, this.color); //VBE #9 color->this.color
         line.drawLine(this);
     }
 
     public void lineDDA(int startX, int startY, int endX, int endY)
     {
-        DDALine line = new DDALine(startX, startY, endX, endY);
+        DDALine line = new DDALine(startX, startY, endX, endY, this.color); //VBE #9 constructor bez barvy je depreciated
         line.drawLine(this);
     }
     public void lineDDA(Point point1, Point point2) {
@@ -50,9 +51,13 @@ public class Renderer {
     public void clear()
     {
         raster.clear();
-        this.line(0,15,raster.getWidth(),15,Color.BLACK);
+        Color m = color;    //VBE #9 přidáno ukládání barvy, abych mohl v rámci clear nakreslit co potřebuji. this.line už nebere barvu.
+        color = Color.BLACK;
+        this.line(0,15,raster.getWidth(),15);
         if (inlineTextString != null)
             raster.DrawText(inlineTextString,10,12,Color.BLACK);
+        color = m;
+        showColor(color);   //VBE #9 zobrazím čtverečky s barvou
     }
     private String inlineTextString;
     public void setInlineTextString ( String text)
@@ -60,7 +65,7 @@ public class Renderer {
         inlineTextString = text;
     }
 
-    public void drawPolygon(List<model.Point> points) 
+    public void drawPolygon(List<Point> points)
     {
         for (int i = 0; i < points.size()-1;i++ )
         {
@@ -107,12 +112,27 @@ public class Renderer {
         drawPolygon(polygon.getPoints());
         //System.out.println(r + ";" + phi0 + ";" + v + ";" + phi + ";" + points.size());
     }
-    
+
+    public void DrawPixel(double x, double y)   //VBE #9 metoda pro kreslení pixelu v barvě nastavené na rendereu
+    {
+        this.DrawPixel(x,y,this.color);
+    }
     public void DrawPixel(double x, double y, Color color)
     {
         raster.DrawPixel(x,y,color);
     }
 
 
+    public void showColor(Color settingColor) { //VBE #9
+        raster.drawRectangle(760,2,10,10,settingColor,true);
+        raster.drawRectangle(770,2,10,10,getColor(),true);
+    }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

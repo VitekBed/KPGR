@@ -1,4 +1,4 @@
-// #3 M:1-3
+// #3 M:1-3 //VBE #9
 
 package model;
 
@@ -107,7 +107,7 @@ public class Polygon {
                 //neřeším nějakou pomocnou třídu pro matice 2x2, determinant je takto dostatečně jednoduchý
                 //neřeším případy kdy det -> 0, protože malé úhly už jsou ošetřeny
                 double det = (v1.getX() * v2.getY()) - (v2.getX() * v1.getY());
-                if (direction != null && direction.booleanValue() != det > 0)   //pokud mám směr ale nesedí, není konvexní
+                if (direction != null && direction != det > 0)   //pokud mám směr ale nesedí, není konvexní
                 {
                     convex = false;
                 }
@@ -128,10 +128,10 @@ public class Polygon {
         if (points.size() < 3) return null;
         List<Line> list = new ArrayList<>();
         for (int i = 0; i < points.size() - 1; i++) {
-            Line line = new DDALine(points.get(i),points.get(i+1));
+            Line line = new DDALine(points.get(i),points.get(i+1), lineColor);  //VBE #9
             list.add(line);
         }
-        Line line = new DDALine(points.get(points.size()-1),points.get(0));
+        Line line = new DDALine(points.get(points.size()-1),points.get(0), lineColor);  //VBE #9
         list.add(line);
         return list;
     }
