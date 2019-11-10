@@ -1,4 +1,4 @@
-//VBE #4 //VBE #9
+//VBE #4 //VBE #9 //VBE #10
 
 package controller;
 
@@ -32,7 +32,7 @@ public class Controller {
         this.renderer = new Renderer(raster);
 
         initListeners(raster);
-        points = new ArrayList<Point>();
+        points = new ArrayList<>();
     }
 
     private void initListeners(Raster raster) {
@@ -95,6 +95,8 @@ public class Controller {
                     case POLYGON2:
                         nuhelnik(e);
                         break;
+                    case FILL:  //VBE #10
+                        renderer.fill(new Point(e.getX(),e.getY()), new Color(raster.getColor((int)e.getX(), (int)e.getY())));
                     default:
                         break;
                 }
@@ -155,6 +157,10 @@ public class Controller {
                         nastaveni = Uloha.POLYGON2;
                         renderer.clear();
                         points.clear();
+                        break;
+                    case '4':   //VBE #10
+                        renderer.setInlineTextString("vyplňování barvou | klikni a vybarví se zvolenou barvou");
+                        nastaveni = Uloha.FILL;
                         break;
                     //-v- nastavování barev VBE #9
                     case 'r':

@@ -1,4 +1,4 @@
-//VBE #9
+//VBE #9 //VBE #10
 package view;
 
 import javax.swing.*;
@@ -11,7 +11,12 @@ public class Raster extends JPanel {
 
     private final BufferedImage img; // objekt pro zápis pixelů
     private final Graphics g; // objekt nad kterým jsou k dispozici grafické funkce
-    private static final int FPS = 1000 / 60;
+    private static final int FPS = 1000 / 30;
+    private final Color backgroundColor = Color.GRAY;
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
 
     public Raster() {
         setPreferredSize(new Dimension(800, 600));
@@ -40,7 +45,7 @@ public class Raster extends JPanel {
     }
 
     public void clear() {
-        g.setColor(Color.GRAY);
+        g.setColor(backgroundColor);
         g.fillRect(0, 0, 800, 600);
     }
 
@@ -78,5 +83,8 @@ public class Raster extends JPanel {
         else {
             drawRectangle(x,y,w,h,color);
         }
+    }
+    public int getColor(int x, int y){
+        return img.getRGB(x,y);
     }
 }

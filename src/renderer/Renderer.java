@@ -1,4 +1,4 @@
-//VBE #5 //VBE #9
+//VBE #5 //VBE #9 //VBE #10
 
 package renderer;
 
@@ -43,7 +43,7 @@ public class Renderer {
     {
         for (int y = startY; y < endY; y++) {
             for (int x = startX; x < endX; x++){
-                raster.DrawPixel(x, y, Color.GREEN);
+                raster.DrawPixel(x, y, this.color);
             }
         }
     }
@@ -65,6 +65,7 @@ public class Renderer {
         inlineTextString = text;
     }
 
+    //region metody polygon
     public void drawPolygon(List<Point> points)
     {
         for (int i = 0; i < points.size()-1;i++ )
@@ -112,6 +113,7 @@ public class Renderer {
         drawPolygon(polygon.getPoints());
         //System.out.println(r + ";" + phi0 + ";" + v + ";" + phi + ";" + points.size());
     }
+    //endregion
 
     public void DrawPixel(double x, double y)   //VBE #9 metoda pro kreslení pixelu v barvě nastavené na rendereu
     {
@@ -135,4 +137,90 @@ public class Renderer {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    //region metody fill VBE #10
+    public void fill(Point point, Color color){
+        if (point.getX() < 0 || point.getX() > raster.getWidth()-1) return; //základní kontrola mezí
+        if (point.getY() < 0 || point.getY() > raster.getHeight()-1) return;
+
+        if (raster.getColor((int)point.getX(),(int)point.getY()) == color.getRGB()) //obarvujeme pouze pokud bod má barvu na kterou jsme klikli
+        {
+            /* Obarvovací metody tvoří čáry, nejprve nakreslíme celou čáru a pote ji od posledního bodu
+             * k prvnímu voláme rekurzivně znovu tuto metodu. Tímto postupem již nebude znovu prováděno
+             * zpracování stejného směru, protože tam již narazíme na hranici. Počet vnoření, které je
+             * nutno držet v zásobníku je tak oproti pamatování si každého bodu značně zkráceno.
+             */
+            fillUp(new DDALine(point,new Point((int)point.getX(), 0),this.color),color);
+            fillDown(new DDALine(point,new Point((int)point.getX(), raster.getHeight()),this.color),color);
+            fillRight(new DDALine(point,new Point(raster.getWidth(),(int)point.getY()),this.color),color);
+            fillLeft(new DDALine(point,new Point(0,(int)point.getY()),this.color),color);
+            /* Protože v každe z předchozích metod poslední bod odbarvujeme na původní barvu,
+             * zde znovu provedeme obarvení. Tento bod je již ve všech směrech zpracován.
+             */
+            raster.DrawPixel((int)point.getX(),(int)point.getY(),this.color);
+            /* Vlastně každý bod rozsvítím, zhasnu a znovu rozsvítím, protože při prvním nakreslení linky
+             * dochází k obarvení všech bodů. Ze všech těchto bodů poté v opačném pořadí provádím odbarvení
+             * a fill. Je to z důvodu, že ve fill kontroluji barvu
+             */
+        }
+    }
+
+    private void fillUp(Line line, Color bgColor) {
+        int x = line.getStartX();
+        int y = line.getStartY();
+        // provedeme kontrolu na hranici (barvou kontroluji jestli hned v dalším pixelu není hrana
+        if (y-1 < 1 || raster.getColor(x,y-1) != bgColor.getRGB()) return;
+        while (y > line.getEndY() && raster.getColor(x,y) == bgColor.getRGB())
+        {
+            raster.DrawPixel(x,y--,this.color); //obarvíme všechny pixely dokun nenarazíme na hranu
+        }
+        while (y++ < line.getStartY())  //vezmeme "úsečku" a odzadu ji zkracujeme
+        {
+            raster.DrawPixel(x,y,bgColor);  //odbarvíme bod aby prošel kontrolou ve fill
+            fill(new Point(x,y),bgColor);   //provedeme rekurzivní obarvení ve všech směrech
+        }
+    }
+    private void fillDown(Line line, Color bgColor) {
+        int x = line.getStartX();
+        int y = line.getStartY();
+        if (y+1 > raster.getHeight()-1 || raster.getColor(x,y+1) != bgColor.getRGB()) return;
+        while (y < line.getEndY() && raster.getColor(x,y) == bgColor.getRGB())
+        {
+            raster.DrawPixel(x,y++,this.color);
+        }
+        while (y-- > line.getStartY())
+        {
+            raster.DrawPixel(x,y,bgColor);
+            fill(new Point(x,y),bgColor);
+        }
+    }
+    private void fillRight(Line line, Color bgColor) {
+        int x = line.getStartX();
+        int y = line.getStartY();
+        if (x+1 > raster.getWidth()-1 || raster.getColor(x+1,y) != bgColor.getRGB()) return;
+        while (x < line.getEndX() && raster.getColor(x,y) == bgColor.getRGB())
+        {
+            raster.DrawPixel(x++,y,this.color);
+        }
+        while (x-- > line.getStartX())
+        {
+            raster.DrawPixel(x,y,bgColor);
+            fill(new Point(x,y),bgColor);
+        }
+    }
+    private void fillLeft(Line line, Color bgColor) {
+        int x = line.getStartX();
+        int y = line.getStartY();
+        if (x-1 < 1 || raster.getColor(x-1,y) != bgColor.getRGB()) return;
+        while (x > line.getEndX() && raster.getColor(x,y) == bgColor.getRGB())
+        {
+            raster.DrawPixel(x--,y,this.color);
+        }
+        while (x++ < line.getStartX())
+        {
+            raster.DrawPixel(x,y,bgColor);
+            fill(new Point(x,y),bgColor);
+        }
+    }
+    //endregion
 }

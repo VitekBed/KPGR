@@ -4,5 +4,6 @@ public enum Uloha {
     CENTER_LINE,
     LINE,
     POLYGON,
-    POLYGON2;
+    POLYGON2,
+    FILL
 }
