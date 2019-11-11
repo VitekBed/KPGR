@@ -5,11 +5,11 @@ import renderer.*;
 
 public abstract class Line
 {
-    protected int startX;
-    protected int startY;
-    protected int endX;
-    protected int endY;
-    protected Color color;
+    int startX;
+    int startY;
+    int endX;
+    int endY;
+    Color color;
 
     public Line(int startX, int startY, int endX, int endY, Color color) {
         this.startX = startX;
@@ -42,6 +42,14 @@ public abstract class Line
     public Line(Point point1, Point point2, Color color) {
         this((int)point1.getX(), (int)point1.getY(),(int)point2.getX(),(int)point2.getY(),color);
     }
+    public Line(Line line)
+    {
+        this.startX = line.startX;
+        this.startY = line.startY;
+        this.endX = line.endX;
+        this.endY = line.endY;
+        this.color = line.color;
+    }
 
     public final int getStartX()
     {
@@ -64,4 +72,28 @@ public abstract class Line
         return color;
     }
     public abstract void drawLine(Renderer renderer);
+
+    public void normalizeY() {
+        if (startY > endY)
+        {
+            int q = startX;
+            startX = endX;
+            endX = q;
+            q = startY;
+            startY = endY;
+            endY = q;
+        }
+    }
+
+    public void normalizeX() {
+        if (startX > endX)
+        {
+            int q = startX;
+            startX = endX;
+            endX = q;
+            q = startY;
+            startY = endY;
+            endY = q;
+        }
+    }
 }

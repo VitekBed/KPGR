@@ -6,6 +6,7 @@ import java.awt.Color;
 import renderer.*;
 
 public class DDALine extends Line {
+    //region Constructor
     @Deprecated(forRemoval = true)  //VBE #9 Deprecated
     public DDALine(int startX, int startY, int endX, int endY) {
         super(startX, startY, endX, endY);
@@ -22,6 +23,11 @@ public class DDALine extends Line {
     public DDALine(Point point1, Point point2, Color color) {
         super(point1, point2, color);
     }
+
+    public DDALine(Line line) {
+        super(line);
+    }
+    //endregion
 
     float k = (float)(endY-startY)/(float)(endX-startX);
     float q = (startY - k * startX);
@@ -47,30 +53,6 @@ public class DDALine extends Line {
                 renderer.DrawPixel(x, y, color);    //VBE #9
                 x = x + h;
             }
-        }
-    }
-
-    private void normalizeY() {
-        if (startY > endY)
-        {
-            int q = startX;
-            startX = endX;
-            endX = q;
-            q = startY;
-            startY = endY;
-            endY = q;
-        }
-    }
-
-    private void normalizeX() {
-        if (startX > endX)
-        {
-            int q = startX;
-            startX = endX;
-            endX = q;
-            q = startY;
-            startY = endY;
-            endY = q;
         }
     }
 }
