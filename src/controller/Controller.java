@@ -82,6 +82,10 @@ public class Controller {
             public void mouseClicked(MouseEvent e) {
                 switch (nastaveni)
                 {
+                    case CENTER_LINE:
+                        renderer.clear();
+                        renderer.lineDDA(400,300,e.getX(),e.getY());
+                        break;
                     case LINE:
                         if (points.size() > 1) {
                             points.clear();
