@@ -9,10 +9,11 @@ public class Primka {
     private double c;
 
     public Primka(Point point1, Point point2) {
+        if (point1.equals(point2)) throw new IllegalArgumentException("Points cannot be equals");
         this.bod = point1;
         double x = point2.getX()-point1.getX();
         double y = point2.getY()-point1.getY();
-        setNormal(new Vec2D(x,-y));
+        setNormal(new Vec2D(y,-x));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class Primka {
     }
     public Point prusecik(Primka primka)
     {
-        if (this.normal.normalized() == primka.normal.normalized() || this.normal.normalized() == primka.normal.opposite().normalized()) return null; //rovnoběžky
+        if (this.normal.normalized().equals(primka.normal.normalized()) || this.normal.normalized().equals(primka.normal.opposite().normalized())) return null; //rovnoběžky
         double a0 = this.normal.getX();
         double b0 = this.normal.getY();
         double c0 = this.c;
@@ -84,5 +85,19 @@ public class Primka {
             return new Point(x,y);
         }
         else return null;   //to by znamenalo a0 == 0 && a1 == 0, což ale znamená dvě rovnoběžky s osou x, sem by program nikdy neměl dojít
+    }
+
+    /***
+     * Určuje ve které polorovině se nachází bod vůči orientované přímce
+     * @param point kontrolovaný bod
+     * @return true = pravá polorovina, false = levá polorovina
+     */
+    public boolean polorovina(Point point)
+    {
+        return normal.getX() * point.getX() + normal.getY() * point.getY() + c > 0;
+    }
+
+    public boolean point(Point point) {
+        return normal.getX() * point.getX() + normal.getY() * point.getY() + c == 0;
     }
 }
