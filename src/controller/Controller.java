@@ -1,4 +1,4 @@
-//VBE #4 //VBE #9 //VBE #10
+//VBE #4 //VBE #9 //VBE #10 //VBE #15
 
 package controller;
 
@@ -42,7 +42,8 @@ public class Controller {
                 switch (nastaveni)
                 {
                     case CENTER_LINE:
-                        renderer.clear();
+                        //renderer.clear();     //deprecated VBE #15
+                        renderer.imgRollback(); //VBE #15
                         renderer.lineDDA(400,300,e.getX(),e.getY());
                         break;
                     /*case LINE:
@@ -62,13 +63,15 @@ public class Controller {
                 {
                     case LINE:
                         if (points.size()==1) {
-                            renderer.clear();
+                            //renderer.clear();     //deprecated VBE #15
+                            renderer.imgRollback(); //VBE #15
                             renderer.lineDDA(points.get(0), new Point(e.getX(), e.getY()));
                         }
                         break;
                     case POLYGON2:
                         if (points.size() == 2) {
-                            renderer.clear();
+                            //renderer.clear();     //deprecated VBE #15
+                            renderer.imgRollback(); //VBE #15
                             renderer.drawPolygon2(points.get(0), points.get(1), new Point(e.getX(), e.getY()));
                         }
                         break;
@@ -83,13 +86,15 @@ public class Controller {
                 switch (nastaveni)
                 {
                     case CENTER_LINE:
-                        renderer.clear();
+                        //renderer.clear();     //deprecated VBE #15
                         renderer.lineDDA(400,300,e.getX(),e.getY());
+                        renderer.imgCommit();   //VBE #15
                         break;
                     case LINE:
                         if (points.size() > 1) {
                             points.clear();
-                            renderer.clear();
+                            //renderer.clear();     //deprecated VBE #15
+                            renderer.imgCommit();   //VBE #15
                         }
                         points.add(new Point(e.getX(),e.getY()));
                         break;
@@ -105,11 +110,23 @@ public class Controller {
                         break;
                 }
             }
+            @Override
+            public void mouseReleased(MouseEvent e) {   //VBE #15
+                if (points == null || nastaveni == null) return;
+                switch (nastaveni)
+                {
+                    case CENTER_LINE:
+                        renderer.imgCommit();
+                        break;
+                }
+            }
 
             private void nuhelnik(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1)    //levý klikání přidává body
                 {
-                    if (points.size() == 0) renderer.clear();   //vymažu obrazovku pro další kreslení
+                    if (points.size() == 0)     //vymažu obrazovku pro další kreslení
+                        //renderer.clear();     //deprecated VBE #15
+                        renderer.imgRollback(); //VBE #15
                     if (points.size() > 2) return;  //pokud už mám dva body další mě nazajímají
                     points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
                 }
@@ -118,15 +135,18 @@ public class Controller {
             private void polygon(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1)    //levý klikání přidává body
                 {   //VBE #4
-                    if (points.size() == 0) renderer.clear();   //vymažu obrazovku pro další kreslení
+                    if (points.size() == 0)     //vymažu obrazovku pro další kreslení
+                        //renderer.clear();     //deprecated VBE #15
+                        renderer.imgRollback(); //VBE #15
                     points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
                     if (points.size() > 1) {    //pokud mám alespoň dva body, vykreslím čáru mezi posledníma dvěma
                         renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
                     }
                 }
                 else {  //nelevým vykreslím polygon
-                    renderer.clear();
+                    //renderer.clear();     //deprecated VBE #15
                     renderer.drawPolygon(points);
+                    renderer.imgCommit();   //VBE #15
                     points.clear();
                 }
             }
@@ -138,28 +158,31 @@ public class Controller {
 			public void keyTyped(KeyEvent e) {
                 switch (e.getKeyChar())
                 {
+                    case ' ':   //VBE #15
+                        renderer.imgClean();
+                        break;
                     case '0':
                         renderer.setInlineTextString("Čára ze středu");
                         nastaveni = Uloha.CENTER_LINE;
-                        renderer.clear();
+                        //renderer.clear(); //deprecated VBE #15
                         points.clear();
                         break;
                     case '1':
                         renderer.setInlineTextString("čára mezi body | pravým klikem urči počáteční bod čáry, levým nakresli čáru");
                         nastaveni = Uloha.LINE;
-                        renderer.clear();
+                        //renderer.clear(); //deprecated VBE #15
                         points.clear();
                         break;
                     case '2':   //VBE #4
                         renderer.setInlineTextString("polygon | levým tlačítem přidávej body, pravým uzavři polygon");
                         nastaveni = Uloha.POLYGON;
-                        renderer.clear();
+                        //renderer.clear(); //deprecated VBE #15
                         points.clear();
                         break;
                     case '3':
                         renderer.setInlineTextString("pravidelný n-úhelník | levým kliknutím určete střed a poté jeden z vrcholů, pravým potvrď");
                         nastaveni = Uloha.POLYGON2;
-                        renderer.clear();
+                        //renderer.clear(); //deprecated VBE #15
                         points.clear();
                         break;
                     case '4':   //VBE #10

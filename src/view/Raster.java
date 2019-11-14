@@ -1,4 +1,4 @@
-//VBE #9 //VBE #10
+//VBE #9 //VBE #10 //VBE #15
 package view;
 
 import javax.swing.*;
@@ -10,6 +10,7 @@ import java.util.TimerTask;
 public class Raster extends JPanel {
 
     private final BufferedImage img; // objekt pro zápis pixelů
+    private final BufferedImage img_r; // VBE #15 objekt pro uchování commitnuté informace
     private final Graphics g; // objekt nad kterým jsou k dispozici grafické funkce
     private static final int FPS = 1000 / 30;
     private final Color backgroundColor = Color.GRAY;
@@ -22,6 +23,7 @@ public class Raster extends JPanel {
         setPreferredSize(new Dimension(800, 600));
         // inicializace image, nastavení rozměrů (nastavení typu - pro nás nedůležité)
         img = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
+        img_r = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);    //VBE #15
         g = img.getGraphics();
         setLoop();
         clear();
@@ -47,6 +49,7 @@ public class Raster extends JPanel {
     public void clear() {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, 800, 600);
+        commit();   //VBE #15
     }
 
     public void DrawPixel(double x, double y, Color color)
@@ -86,5 +89,15 @@ public class Raster extends JPanel {
     }
     public int getColor(int x, int y){
         return img.getRGB(x,y);
+    }
+
+    public void rollback()  //VBE #15
+    {
+        img.setData(img_r.getData());
+    }
+
+    public void commit()    //VBE #15
+    {
+        img_r.setData(img.getData());
     }
 }

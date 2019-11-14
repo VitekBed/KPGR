@@ -1,4 +1,4 @@
-//VBE #5 //VBE #9 //VBE #10
+//VBE #5 //VBE #9 //VBE #10 //VBE #15
 
 package renderer;
 
@@ -39,15 +39,31 @@ public class Renderer {
         lineDDA((int)point1.getX(),(int)point1.getY(),(int)point2.getX(),(int)point2.getY());
     }
 
-    private void Obdelnik(int startX, int startY, int endX, int endY)
+    public void imgClean(){ imgClean(false);}   //VBE #15
+    public void imgClean(boolean onlyBar)   //VBE #15
     {
-        for (int y = startY; y < endY; y++) {
-            for (int x = startX; x < endX; x++){
-                raster.DrawPixel(x, y, this.color);
-            }
-        }
+        //přebírá kompletně clear() k 191114.1930, commit a40c4f9
+
+        if (onlyBar) raster.drawRectangle(0,0, raster.getWidth(),15, raster.getBackgroundColor());
+        else raster.clear();
+
+        Color m = color;    //VBE #9 přidáno ukládání barvy, abych mohl v rámci clear nakreslit co potřebuji. this.line už nebere barvu.
+        color = Color.BLACK;
+        this.line(0,15,raster.getWidth(),15);
+        if (inlineTextString != null)
+            raster.DrawText(inlineTextString,10,12,Color.BLACK);
+        color = m;
+        showColor();   //VBE #9 zobrazím čtverečky s barvou
+
+        imgCommit();
     }
-    
+    public void imgRollback(){raster.rollback();}   //VBE #15
+    public void imgCommit(){raster.commit();}       //VBE #15
+
+    /***
+     * Nahrazeno metodami imgClean(), imgRollback() a imgCommit() VBE #15
+     */
+    @Deprecated(forRemoval = true)  //VBE #15
     public void clear()
     {
         raster.clear();
@@ -63,6 +79,7 @@ public class Renderer {
     public void setInlineTextString ( String text)
     {
         inlineTextString = text;
+        imgClean(true); //VBE #15
     }
 
     //region metody polygon
@@ -124,7 +141,10 @@ public class Renderer {
         raster.DrawPixel(x,y,color);
     }
 
-
+    public void showColor() //VBE #15
+    {
+        raster.drawRectangle(770,2,10,10,getColor(),true);
+    }
     public void showColor(Color settingColor) { //VBE #9
         raster.drawRectangle(760,2,10,10,settingColor,true);
         raster.drawRectangle(770,2,10,10,getColor(),true);
