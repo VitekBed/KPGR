@@ -47,10 +47,16 @@ public class Primka {
     }
     //endregion
 
+    /***
+     * Vrací průsečík přímky s čárou, Pozor: čára má vždy koncové souřadnice s ořezanými desetinnými místy!
+     * @param line
+     * @return bod který je průsečíkem čáry s přímkou
+     */
     public Point prusecik(Line line)
     {
         Line normLine = new DDALine(line);
         Point point = prusecik(new Primka(new Point(line.getStartX(),line.getStartY()),new Point(line.getEndX(),line.getEndY())));
+        if (point == null) return null;
         normLine.normalizeX();
         if (point.getX() < normLine.getStartX() || point.getX() > normLine.getEndX()) return null;
         normLine.normalizeY();

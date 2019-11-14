@@ -1,5 +1,7 @@
 package test;
 
+import model.DDALine;
+import model.Line;
 import model.Point;
 import model.Primka;
 import org.junit.jupiter.api.Test;
@@ -103,7 +105,28 @@ class PrimkaTest {
 
     @Test
     void prusecikLine() {
-        //TODO: dodělat testy na průsečíky přímky a úsečky
+        Point point1 = new Point(0,0);
+        Point point2 = new Point(8,8);
+        Point point3 = new Point(0,4);
+        Point point4 = new Point(8,4);
+        Primka primka1 = new Primka(point1,point2);
+        Primka primka2 = new Primka(point3,point4);
+        Line line1 = new DDALine(point3,point4,null);
+
+        assertEquals(new Point(4,4),primka1.prusecik(line1));
+        assertNull(primka2.prusecik(line1));
+
+        Primka primka = new Primka(point1,point3);
+        Line line2 = new DDALine(point2,point4,null);
+        Line line3 = new DDALine(new Point(-2,6),new Point(1,6),null);
+        Line line4 = new DDALine(new Point(-2,6),new Point(0,6),null);
+        Line line5 = new DDALine(new Point(-2,6),new Point(-0.9,6),null);
+        Line line6 = new DDALine(new Point(-2,6),new Point(-1,6),null);
+        assertNull(primka.prusecik(line2));
+        assertEquals(new Point(0,6),primka.prusecik(line3));
+        assertEquals(new Point(0,6),primka.prusecik(line4));
+        assertEquals(new Point(0,6),primka.prusecik(line5));
+        assertEquals(null,primka.prusecik(line6));
     }
 
     @Test
