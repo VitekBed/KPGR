@@ -38,8 +38,9 @@ Bonus: Doplňte možnost editace již zadaného n-úhelníku, změna pozice vrch
 - [ ] **Bonus:** rozšiřte počet řídících bodů na šest. Pokuste se o hladké napojení navazujících křivek. 
 
 ## Ovládání
-##### Úlohy
+### Úlohy
 Ovládíní je připraveno jako volba typu úlohy a jednoduché klikání myší. Nejprve je tedy potřeba zvolit číslo úlohy, následně podle pokynů levým a pravým klikáním myši provádět akce.
+- *mezerník* - Vyčištění plátna.
 - *0* - Čára ze středu
   - kliknutím nebo tažením se kreslí čára ze středu.
 - *1* - Čára mezi body
@@ -55,7 +56,7 @@ Ovládíní je připraveno jako volba typu úlohy a jednoduché klikání myší
 - *4* - Vyplnění záplavovým algoritmem
   - kliknutím udejte místo ze kterého dojde k vybarvení plochy
 
-##### Barvy
+### Barvy
 Po dlouhém zvažování jak umožnit uživateli kreslit jím zvolenou barvou jsem došel k návrhu míchání barev. Stiskem klávesy se zvolí jedna ze základních barev a pomocí + a - se nastaví její hodnota. Zvolená barva a výsledek míchání se zobrazují jako dva malé sousedící čtverečky v pravém horním rohu obrazovky.
 - **r** - červená barva
 - **g** - zelená barva
@@ -65,4 +66,4 @@ Po dlouhém zvažování jak umožnit uživateli kreslit jím zvolenou barvou js
 ***
 
 ## Kdo jsem
-Jsem Vít Bednář a živím se programováním C#. Nejsem sběhlý ani v návrhu vícevrstvých aplikací, v mém zaměstnání vše co tvořím je na úrovni aplikační vrtvy. Javu nemám zrovna v oblibě i když s dobrým vývojovým prostředím jí začínám trošku přicházet v některých směrech na chuť, v jiných právě naopak.
+Jsem Vít Bednář a živím se programováním C#. Nejsem sběhlý ani v návrhu vícevrstvých aplikací, v mém zaměstnání vše co tvořím je na úrovni aplikační vrtvy. Javu nemám zrovna v oblibě i když s dobrým vývojovým prostředím jí začínám trošku přicházet v některých směrech na chuť.
