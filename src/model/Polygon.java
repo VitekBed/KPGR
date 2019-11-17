@@ -1,4 +1,4 @@
-// #3 M:1-3 //VBE #9 //VBE #12
+// #3 M:1-3 //VBE #9 //VBE #12 //VBE #7
 
 package model;
 
@@ -22,12 +22,16 @@ public class Polygon {
         this(Color.BLACK,Color.ORANGE);
     }
 
-    public Polygon(List<Point> points) {
-        this.points = points;
+    public Polygon(List<Point> points) {    //VBE #7 předěláno na foreach
+        this.points = new ArrayList<>();
+        for (Point point : points)
+            addPoint(point);
     }
 
-    public Polygon(List<Point> points, Color lineColor, Color color) {
-        this.points = points;
+    public Polygon(List<Point> points, Color lineColor, Color color) {  //VBE #7 předěláno na foreach
+        this.points = new ArrayList<>();
+        for (Point point : points)
+            addPoint(point);
         this.lineColor = lineColor;
         this.color = color;
     }
