@@ -1,4 +1,4 @@
-//VBE #5 //VBE #9 //VBE #10 //VBE #15 //VBE #16
+//VBE #5 //VBE #9 //VBE #10 //VBE #15 //VBE #16 //VBE #12
 
 package renderer;
 
@@ -246,4 +246,43 @@ public class Renderer {
         }
     }
     //endregion
+
+    public Polygon orez(Polygon polygon, Polygon orez)  //VBE #12
+    {
+        if (!orez.getConvex()) return null;
+        for (int i = 0; i < orez.getLines().size(); i++) {
+            ArrayList<Point> points = new ArrayList<>();
+            Primka primka = new Primka(orez.getLines().get(i));
+            for (int j = 0; j < polygon.getLines().size(); j++) {
+                Line line = polygon.getLines().get(j);
+                Point prusecik = primka.prusecik(line);
+                boolean a = primka.polorovina(line.getStartPoint());
+                boolean b = primka.polorovina(line.getEndPoint());
+                Boolean d = !orez.getDirection();
+                System.out.println("Uvnitř: " + (a == d) + (a == b));
+                if (a == d && b != d)   //pokud začátek čáry je uvnitř a konec ne
+                {
+                    points.add(line.getStartPoint());
+                    points.add(prusecik);
+                }
+                if (a != d && b == d)   //pokud začátek čáry není uvnitř a konec je
+                {
+                    points.add(prusecik);
+                    points.add(line.getEndPoint());
+                }
+                if (a == d && b == d)   //pokud začátek i konec čáry je uvnitř
+                {
+                    points.add(line.getStartPoint());
+                    points.add(line.getEndPoint());
+                }
+            }
+            points = util.utility.removeDuplicates(points); //odstraním duplicity (points se porovnávají podle equals
+            polygon = new Polygon(points,polygon.getLineColor(),polygon.getColor());    //vyrobím nový polygon už částečně oříznutý
+            System.out.println("---");
+            imgClean();
+            drawPolygon(polygon);
+        }
+        return polygon;
+    }
+
 }

@@ -15,6 +15,10 @@ public class Primka {
         double y = point2.getY()-point1.getY();
         setNormal(new Vec2D(y,-x));
     }
+    public Primka(Line line)    //VBE #12
+    {
+        this(new Point(line.getStartX(),line.getStartY()),new Point(line.getEndX(),line.getEndY()));
+    }
 
     @Override
     public String toString() {

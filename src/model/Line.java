@@ -1,3 +1,4 @@
+//VBE #12
 package model;
 
 import java.awt.Color;
@@ -67,6 +68,8 @@ public abstract class Line
     {
         return endY;
     }
+    public final Point getStartPoint() {return new Point(startX,startY);}   //VBE #12
+    public final Point getEndPoint() {return new Point(endX,endY);}         //VBE #12
     public final Color getColor()
     {
         return color;
@@ -96,4 +99,6 @@ public abstract class Line
             endY = q;
         }
     }
+
+
 }

@@ -152,6 +152,8 @@ public class Controller {
                     switch (nastaveni)
                     {
                         case POLYGON:
+                            if (polygon == null || points.size() == 0) polygon = new Polygon(); //VBE #12 nechceme situaci kdy polygon == null
+                            polygon.addPoint(new Point(e.getX(), e.getY()));    //VBE #12 využíváme logiku adderu aby se dal použít direction a další vlastnosti
                             points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
                             if (points.size() > 1) {    //pokud mám alespoň dva body, vykreslím čáru mezi posledníma dvěma
                                 //renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
@@ -184,13 +186,13 @@ public class Controller {
                         switch (nastaveni)
                         {
                             case POLYGON:
-                                polygon = new Polygon(points);  //VBE #16 vytvoříme a zapamatujeme si polygon (pro nastavení 5)
+                                //polygon = new Polygon(points);  //VBE #16 vytvoříme a zapamatujeme si polygon (pro nastavení 5) //VBE #12 polygon tvoříme už při kreslení, zde to nechceme
                                 renderer.drawPolygon(polygon);  //VBE #16 vykreslíme polygon novou metodou
                                 break;
                             case OREZ:
                                 //orez = new Polygon(points);   //Polygon orez v tuto chvíli už existuje a vš přidávám pomocí addPoint
                                 renderer.drawPolygon(orez);
-                                //renderer.orez(polygon,orez);
+                                polygon = renderer.orez(polygon,orez);  //provedeme ořez
                                 break;
                         }
 
