@@ -1,4 +1,4 @@
-//VBE #4 //VBE #9 //VBE #10 //VBE #15 //VBE #16
+//VBE #4 //VBE #9 //VBE #10 //VBE #15 //VBE #16 //VBE #12
 
 package controller;
 
@@ -29,6 +29,7 @@ public class Controller {
     private final int delta = 10;   //skoky při změně barvy
     //-^- VBE #9
     private Polygon polygon;    //VBE #16
+    private Polygon orez;       //VBE #12
 
     public Controller(Raster raster) {
         this.renderer = new Renderer(raster);
@@ -71,6 +72,7 @@ public class Controller {
                         }
                         break;
                     case POLYGON:   //VBE #16 tažení čáry v průběhu kreslení polygonu
+                    case OREZ:
                         if (points.size()>0) {
                             renderer.imgRollback();
                             renderer.lineDDA(points.get(points.size() - 1), new Point(e.getX(), e.getY()));
@@ -107,6 +109,7 @@ public class Controller {
                         points.add(new Point(e.getX(),e.getY()));
                         break;
                     case POLYGON:
+                    case OREZ:      //VBE #12
                         polygon(e);
                         break;
                     case POLYGON2:
@@ -140,25 +143,60 @@ public class Controller {
                 }
             }
 
-            private void polygon(MouseEvent e) {
+            private void polygon(MouseEvent e) {        //VBE #12 refactoring, metoda volaná pro obecný i konvexní polygon
                 if (e.getButton() == MouseEvent.BUTTON1)    //levý klikání přidává body
                 {   //VBE #4
                     if (points.size() == 0)     //vymažu obrazovku pro další kreslení
                         //renderer.clear();     //deprecated VBE #15
                         renderer.imgRollback(); //VBE #15
-                    points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
-                    if (points.size() > 1) {    //pokud mám alespoň dva body, vykreslím čáru mezi posledníma dvěma
-                        renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
-                        renderer.imgCommit();   //VBE #16 po potvrzení čáry potvrzujeme i obrázek
+                    switch (nastaveni)
+                    {
+                        case POLYGON:
+                            points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
+                            if (points.size() > 1) {    //pokud mám alespoň dva body, vykreslím čáru mezi posledníma dvěma
+                                //renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
+                                renderer.imgCommit();   //VBE #16 po potvrzení čáry potvrzujeme i obrázek
+                            }
+                            break;
+                        case OREZ:
+                            if (orez == null || points.size() == 0) orez = new Polygon();
+                            if (points.size() < 3) {    //pokud mám jen tři body, jsou vždy konvexní, když mám tři, čtvrtý již být nemusí
+                                //renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
+                                orez.addPoint(new Point(e.getX(), e.getY()));   //přidáme bod do objektu ořezu
+                                points.add(new Point(e.getX(), e.getY()));
+                                renderer.imgCommit();
+                            }
+                            else{
+                                if (orez.testConvex(new Point(e.getX(),e.getY())))  //testuji zda přidaný bod bude konvexní
+                                {
+                                    orez.addPoint(new Point(e.getX(), e.getY()));   //přidáme bod do objektu ořezu
+                                    points.add(new Point(e.getX(), e.getY()));
+                                    renderer.imgCommit();
+                                }
+                            }
+                            break;
                     }
                 }
                 else {  //nelevým vykreslím polygon
                     //renderer.clear();     //deprecated VBE #15
                     renderer.imgRollback();     //VBE #16 nejprve musíme smazat "taženou" čáru
-                    polygon = new Polygon(points);  //VBE #16 vytvoříme a zapamatujeme si polygon (pro nastavení 5)
-                    renderer.drawPolygon(polygon);  //VBE #16 vykreslíme polygon novou metodou
-                    renderer.imgCommit();   //VBE #15
-                    points.clear();
+                    if (points.size() > 2){     //dokončujeme polygon jen když má alespoň tři vrcholy
+                        switch (nastaveni)
+                        {
+                            case POLYGON:
+                                polygon = new Polygon(points);  //VBE #16 vytvoříme a zapamatujeme si polygon (pro nastavení 5)
+                                renderer.drawPolygon(polygon);  //VBE #16 vykreslíme polygon novou metodou
+                                break;
+                            case OREZ:
+                                //orez = new Polygon(points);   //Polygon orez v tuto chvíli už existuje a vš přidávám pomocí addPoint
+                                renderer.drawPolygon(orez);
+                                //renderer.orez(polygon,orez);
+                                break;
+                        }
+
+                        renderer.imgCommit();   //VBE #15
+                        points.clear();
+                    }
                 }
             }
             
@@ -172,6 +210,8 @@ public class Controller {
                     case ' ':   //VBE #15
                         renderer.imgClean();
                         points.clear(); //VBE #16 pro jistotu
+                        polygon = null; //VBE #12
+                        orez = null;    //VBE #12
                         break;
                     case '0':
                         renderer.setInlineTextString("Čára ze středu");
@@ -201,7 +241,12 @@ public class Controller {
                         renderer.setInlineTextString("vyplňování barvou | klikni a vybarví se zvolenou barvou");
                         nastaveni = Uloha.FILL;
                         break;
-                    //-v- nastavování barev VBE #9
+                    case '5':   //VBE #12
+                        if (polygon == null) renderer.setInlineTextString("ořezávání polygonem | neprve zvol 2 a nakreli polygon");
+                        else renderer.setInlineTextString("ořezávání polygonem | levým tlačítem přidávej body, pravým uzavři ořezový polygon");
+                        nastaveni = Uloha.OREZ;
+                        break;
+                    //region nastavování barev VBE #9
                     case 'r':
                         barva = Color.RED;
                         renderer.showColor(barva);
@@ -214,6 +259,7 @@ public class Controller {
                         barva = Color.BLUE;
                         renderer.showColor(barva);
                         break;
+                    //endregion
                 }
 				
 			}
