@@ -1,4 +1,4 @@
-//VBE #5 //VBE #9 //VBE #10 //VBE #15
+//VBE #5 //VBE #9 //VBE #10 //VBE #15 //VBE #16
 
 package renderer;
 
@@ -83,7 +83,7 @@ public class Renderer {
     }
 
     //region metody polygon
-    public void drawPolygon(List<Point> points)
+    private void drawPolygon(List<Point> points)    //VBE #16 public -> private
     {
         for (int i = 0; i < points.size()-1;i++ )
         {
@@ -91,7 +91,10 @@ public class Renderer {
         }
         this.lineDDA((int)points.get(0).getX(),(int)points.get(0).getY(),(int)points.get(points.size()-1).getX(),(int)points.get(points.size()-1).getY());
     }
-
+    public void drawPolygon(Polygon polygon)    //VBE #16 "správnější" metoda pro kreslení polygonu
+    {
+        drawPolygon(polygon.getPoints());
+    }
     public void drawPolygon2(Point center, Point apex, Point point)  //VBE #5
     {
         /*  Všechny body pravidelného n-úhelníku musí ležet na krušnici. Paramterické vyjádření kružnice:

@@ -1,7 +1,8 @@
-//VBE #4 //VBE #9 //VBE #10 //VBE #15
+//VBE #4 //VBE #9 //VBE #10 //VBE #15 //VBE #16
 
 package controller;
 
+import model.Polygon;
 import view.Raster;
 import model.Point;
 import renderer.*;
@@ -27,6 +28,7 @@ public class Controller {
     private int b = 0;
     private final int delta = 10;   //skoky při změně barvy
     //-^- VBE #9
+    private Polygon polygon;    //VBE #16
 
     public Controller(Raster raster) {
         this.renderer = new Renderer(raster);
@@ -66,6 +68,12 @@ public class Controller {
                             //renderer.clear();     //deprecated VBE #15
                             renderer.imgRollback(); //VBE #15
                             renderer.lineDDA(points.get(0), new Point(e.getX(), e.getY()));
+                        }
+                        break;
+                    case POLYGON:   //VBE #16 tažení čáry v průběhu kreslení polygonu
+                        if (points.size()>0) {
+                            renderer.imgRollback();
+                            renderer.lineDDA(points.get(points.size() - 1), new Point(e.getX(), e.getY()));
                         }
                         break;
                     case POLYGON2:
@@ -141,11 +149,14 @@ public class Controller {
                     points.add(new Point(e.getX(), e.getY()));  //přidám bod do points
                     if (points.size() > 1) {    //pokud mám alespoň dva body, vykreslím čáru mezi posledníma dvěma
                         renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
+                        renderer.imgCommit();   //VBE #16 po potvrzení čáry potvrzujeme i obrázek
                     }
                 }
                 else {  //nelevým vykreslím polygon
                     //renderer.clear();     //deprecated VBE #15
-                    renderer.drawPolygon(points);
+                    renderer.imgRollback();     //VBE #16 nejprve musíme smazat "taženou" čáru
+                    polygon = new Polygon(points);  //VBE #16 vytvoříme a zapamatujeme si polygon (pro nastavení 5)
+                    renderer.drawPolygon(polygon);  //VBE #16 vykreslíme polygon novou metodou
                     renderer.imgCommit();   //VBE #15
                     points.clear();
                 }
@@ -160,6 +171,7 @@ public class Controller {
                 {
                     case ' ':   //VBE #15
                         renderer.imgClean();
+                        points.clear(); //VBE #16 pro jistotu
                         break;
                     case '0':
                         renderer.setInlineTextString("Čára ze středu");
