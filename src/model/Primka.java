@@ -1,4 +1,4 @@
-//VBE #12
+//VBE #12 //VBE #17
 package model;
 
 import transforms.Vec2D;
@@ -109,5 +109,9 @@ public class Primka {
 
     public boolean point(Point point) {
         return normal.getX() * point.getX() + normal.getY() * point.getY() + c == 0;
+    }
+
+    public boolean rovnobezka(Primka primka) {  //VBE #17
+        return (this.normal.normalized().equals(primka.normal.normalized()) || this.normal.normalized().equals(primka.normal.opposite().normalized()));
     }
 }

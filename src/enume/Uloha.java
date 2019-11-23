@@ -6,5 +6,6 @@ public enum Uloha {
     POLYGON,
     POLYGON2,
     OREZ,
-    FILL
+    FILL,
+    SCANLINE
 }

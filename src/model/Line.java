@@ -1,7 +1,9 @@
-//VBE #12
+//VBE #12 //VBE #17
 package model;
 
 import java.awt.Color;
+import java.security.InvalidParameterException;
+
 import renderer.*;
 
 public abstract class Line
@@ -100,5 +102,20 @@ public abstract class Line
         }
     }
 
+    public boolean isNormalizedY(){ //VBE #17
+        return (startY < endY);
+    }
 
+    public void reduceEndY() throws InvalidParameterException { //VBE #17
+        if (isNormalizedY()) {
+            endY--;
+        } else {
+            normalizeY();
+            if (isNormalizedY()) {
+                endY--;
+            } else {
+                throw new InvalidParameterException("Line is horizontal, cannot reduce!");
+            }
+        }
+    }
 }

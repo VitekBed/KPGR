@@ -147,4 +147,26 @@ class PrimkaTest {
         assertTrue(primka2.polorovina(pointA));
         assertFalse(primka2.polorovina(pointB));
     }
+
+    @Test
+    void rovnobezka(){
+        Point point1 = new Point(0,0);
+        Point point2 = new Point(1,1);
+        Primka primka1 = new Primka(point1,point2);  //osa 1.-3. kvadrantu
+        Primka primka2 = new Primka(point2,point1);  //osa 1.-3. kvadrantu
+        assertTrue(primka1.rovnobezka(primka2));
+        assertTrue(primka2.rovnobezka(primka1));
+
+        Point point3 = new Point(0,0);
+        Point point4 = new Point(8,8);
+        Point point5 = new Point(2,-4);
+        Point point6 = new Point(0,-6);
+        Primka primka3 = new Primka(point5,point6);
+        Primka primka4 = new Primka(point3,point4);
+        assertTrue(primka3.rovnobezka(primka4));
+        assertTrue(primka4.rovnobezka(primka3));
+
+        Primka primka5 = new Primka(point3,point5);
+        assertFalse(primka5.rovnobezka(primka1));
+    }
 }

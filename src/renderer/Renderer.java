@@ -1,15 +1,17 @@
-//VBE #5 //VBE #9 //VBE #10 //VBE #15 //VBE #16 //VBE #12
+//VBE #5 //VBE #9 //VBE #10 //VBE #15 //VBE #16 //VBE #12 //VBE #17
 
 package renderer;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import model.*;
 import model.Point;
 import model.Polygon;
 import transforms.Vec2D;
+import util.utility;
 import view.*;
 
 public class Renderer {
@@ -251,7 +253,7 @@ public class Renderer {
     {
         if (!orez.getConvex()) return null;
         for (int i = 0; i < orez.getLines().size(); i++) {
-            ArrayList<Point> points = new ArrayList<>();
+            List<Point> points = new ArrayList<>();     //VBE #17 ArrayList -> List
             Primka primka = new Primka(orez.getLines().get(i));
             for (int j = 0; j < polygon.getLines().size(); j++) {
                 Line line = polygon.getLines().get(j);
@@ -279,10 +281,41 @@ public class Renderer {
             points = util.utility.removeDuplicates(points); //odstraním duplicity (points se porovnávají podle equals
             polygon = new Polygon(points,polygon.getLineColor(),polygon.getColor());    //vyrobím nový polygon už částečně oříznutý
             System.out.println("---");
-            imgClean();
-            drawPolygon(polygon);
+            //imgClean();           //REM VBE #17
+            //drawPolygon(polygon); //REM VBE #17
         }
         return polygon;
     }
 
+    public void scanLine(Polygon polygon) { //VBE #17
+        List<Line> lines = new ArrayList<>(polygon.getLines());
+        //lines.removeHorizontals();       //odstraníme horizontály
+        //lines.lineListOrientation();     //seřadíme vektory ve směru shora dolu, abychom mohli zkrátit o poslední y bod
+        //lines.lineListReduction();       //zkrátíme konce všech čar o jeden pixel
+        lines = utility.prepareScanLine(lines); //provede předchozí tři kroky ale jen přes jednu iteraci
+        int maxY = utility.getPointListMaxY(polygon.getPoints());
+        int minY = utility.getPointListMinY(polygon.getPoints());
+
+        for (int i = minY; i < maxY; i++) {
+            Primka hLine = new Primka(new Point(0,i),new Point(raster.getWidth(),i));   //horizontální čára
+            List<Point> points = new ArrayList<>();
+            for (Line line : lines) {
+                Point point = hLine.prusecik(line);
+                if (point != null) points.add(point);   //pro každou horizontální čáru najdu všechny průsečíky
+            }
+            points.sort(new Comparator<Point>() {
+                @Override
+                public int compare(Point p1, Point p2) {
+                    return (int) p1.getX() - (int) p2.getX();
+                }
+            });
+            if (points.size()%2 >0)
+            {
+                System.out.println("problemek");
+            }
+            for (int j = 0; j < points.size(); j=j+2) {
+                lineDDA(points.get(j),points.get(j+1));     //pro každou dvojici průsečíků nakreslím čáru
+            }
+        }
+    }
 }

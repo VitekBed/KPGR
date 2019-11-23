@@ -1,4 +1,4 @@
-//VBE #4 //VBE #9 //VBE #10 //VBE #15 //VBE #16 //VBE #12
+//VBE #4 //VBE #9 //VBE #10 //VBE #15 //VBE #16 //VBE #12 //VBE #17
 
 package controller;
 
@@ -73,6 +73,7 @@ public class Controller {
                         break;
                     case POLYGON:   //VBE #16 tažení čáry v průběhu kreslení polygonu
                     case OREZ:
+                    case SCANLINE:  //VBE #17
                         if (points.size()>0) {
                             renderer.imgRollback();
                             renderer.lineDDA(points.get(points.size() - 1), new Point(e.getX(), e.getY()));
@@ -110,6 +111,7 @@ public class Controller {
                         break;
                     case POLYGON:
                     case OREZ:      //VBE #12
+                    case SCANLINE:  //VBE #17
                         polygon(e);
                         break;
                     case POLYGON2:
@@ -161,6 +163,7 @@ public class Controller {
                             }
                             break;
                         case OREZ:
+                        case SCANLINE:  //VBE #17
                             if (orez == null || points.size() == 0) orez = new Polygon();
                             if (points.size() < 3) {    //pokud mám jen tři body, jsou vždy konvexní, když mám tři, čtvrtý již být nemusí
                                 //renderer.lineDDA(points.get(points.size() - 2), new Point(e.getX(), e.getY()));
@@ -191,9 +194,16 @@ public class Controller {
                                 break;
                             case OREZ:
                                 //orez = new Polygon(points);   //Polygon orez v tuto chvíli už existuje a vš přidávám pomocí addPoint
-                                renderer.drawPolygon(orez);
+                                //renderer.drawPolygon(orez);   //REM VBE #17
                                 polygon = renderer.orez(polygon,orez);  //provedeme ořez
+                                renderer.imgClean();            //VBE #17 vyňato z drawPolygon(orez);
+                                renderer.drawPolygon(polygon);  //VBE #17 vyňato z drawPolygon(orez);
                                 break;
+                            case SCANLINE:  //VBE #17
+                                polygon = renderer.orez(polygon,orez);  //provedeme ořez
+                                renderer.imgClean();
+                                renderer.scanLine(polygon);
+                                renderer.drawPolygon(polygon);
                         }
 
                         renderer.imgCommit();   //VBE #15
@@ -247,6 +257,11 @@ public class Controller {
                         if (polygon == null) renderer.setInlineTextString("ořezávání polygonem | neprve zvol 2 a nakreli polygon");
                         else renderer.setInlineTextString("ořezávání polygonem | levým tlačítem přidávej body, pravým uzavři ořezový polygon");
                         nastaveni = Uloha.OREZ;
+                        break;
+                    case '6':   //VBE #17
+                        if (polygon == null) renderer.setInlineTextString("ořezávání polygonem + scan-line | neprve zvol 2 a nakreli polygon");
+                        else renderer.setInlineTextString("ořezávání polygonem + scan-line | levým tlačítem přidávej body, pravým uzavři ořezový polygon");
+                        nastaveni = Uloha.SCANLINE;
                         break;
                     //region nastavování barev VBE #9
                     case 'r':
