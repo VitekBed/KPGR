@@ -1,3 +1,4 @@
+//VBE #20
 package model;
 
 import java.awt.Color;
@@ -41,5 +42,10 @@ public class BasicLine extends Line {
             float y = (k*x+q);
             renderer.DrawPixel(x,y,color);
         }
+    }
+
+    @Override
+    public float getK() {
+        return 0;   //VBE #20 TODO
     }
 }

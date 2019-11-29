@@ -1,4 +1,4 @@
-//VBE #9
+//VBE #9 //VBE #20
 package model;
 
 import java.awt.Color;
@@ -28,6 +28,12 @@ public class DDALine extends Line {
         super(line);
     }
     //endregion
+
+
+    @Override
+    public float getK() {   //VBE #20
+        return k;
+    }
 
     float k = (float)(endY-startY)/(float)(endX-startX);
     float q = (startY - k * startX);

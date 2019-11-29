@@ -1,4 +1,4 @@
-//VBE #17
+//VBE #17 //VBE #20
 package util;
 
 import model.*;
@@ -32,7 +32,12 @@ public final class utility {
         Primka horizontal = new Primka(new Point(0,0),new Point(1,0));
         for (Line line : lines) {
             Primka pLine = new Primka(line);
-            if (!horizontal.rovnobezka(pLine)) {
+            /*if (!horizontal.rovnobezka(pLine)) {  //REM VBE #20
+                line.reduceEndY();
+                out.add(line);
+            }*/
+            if (Math.round(line.getK()*1000)/1000f != 0)    //VBE #20 pokud k nulová, pak se jedná o horizontálu
+            {
                 line.reduceEndY();
                 out.add(line);
             }

@@ -1,4 +1,4 @@
-//VBE #12 //VBE #17
+//VBE #12 //VBE #17 //VBE #20
 package model;
 
 import java.awt.Color;
@@ -118,4 +118,6 @@ public abstract class Line
             }
         }
     }
+
+    public abstract float getK();   //VBE #20
 }
