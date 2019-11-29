@@ -21,7 +21,7 @@ Doplňte program tak, aby bylo možné zadat uzavřený n-úhelník, tzn. vrchol
 - [X] Uvažujte dvě možnosti hraniční podmínky vyplňování. Jednak omezení barvou pozadí a jednak barvou hranice.
 - [ ] **Bonus:** Při vyplňovaní rastrově zadané hranice implementujte také variantu vyplnění útvaru pravidelně se opakujícím vzorem zadaným čtvercovou maticí, stačí jako konstanta v kódu.
 - [X] Implementujte algoritmus ořezání libovolného uzavřeného n-úhelníku konvexním n-úhelníkem. Oba útvary jsou zadány seznamem úseček tvořících jejich obvod (geometricky zadaná hranice).
-- [ ] Implementujte Scan-line algoritmus vyplnění plochy n-úhelníku, který je výsledkem ořezání v předchozím kroku.
+- [X] Implementujte Scan-line algoritmus vyplnění plochy n-úhelníku, který je výsledkem ořezání v předchozím kroku.
 - [ ] **Bonus:** Doplňte možnost editace již zadaného n-úhelníku, změna pozice vrcholu, případně smazání stávajícího či přidání nového vrcholu. 
 
 ### Úloha 3
@@ -55,6 +55,19 @@ Ovládíní je připraveno jako volba typu úlohy a jednoduché klikání myší
   - lze nakreslit n-úhelník až o 3 - 36 vrcholech
 - *4* - Vyplnění záplavovým algoritmem
   - kliknutím udejte místo ze kterého dojde k vybarvení plochy
+- *5* - Ořez polygonu konvexním n-úhelníkem
+  - nejprve zvolte 2 a zadejte libovolný polygon
+  - poté stiskněte 5 a zadejte konvexní n-úhelník
+    - nekonvexní n-úhelník není (nemělo by být) možné zadat
+  - ukončení zadávání polygonů je vždy pravým tlačítkem myši
+- *6* - Ořez s vyplněním ořízlého útvaru
+   - nejprve zvolte 2 a zadejte libovolný polygon
+   - poté stiskněte 5 a zadejte konvexní n-úhelník
+     - nekonvexní n-úhelník není (nemělo by být) možné zadat
+   - ukončení zadávání polygonů je vždy pravým tlačítkem myši
+
+Pokud by jste se ve kteroukoliv chvíli dostali do situace, kdy vám program neumožní pokračovat v zadávání,
+stiskněte mezerník a zkuste objekt zadat znovu.
 
 ### Barvy
 Po dlouhém zvažování jak umožnit uživateli kreslit jím zvolenou barvou jsem došel k návrhu míchání barev. Stiskem klávesy se zvolí jedna ze základních barev a pomocí + a - se nastaví její hodnota. Zvolená barva a výsledek míchání se zobrazují jako dva malé sousedící čtverečky v pravém horním rohu obrazovky.
