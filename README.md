@@ -25,20 +25,34 @@ Doplňte program tak, aby bylo možné zadat uzavřený n-úhelník, tzn. vrchol
 - [ ] **Bonus:** Doplňte možnost editace již zadaného n-úhelníku, změna pozice vrcholu, případně smazání stávajícího či přidání nového vrcholu. 
 
 ### Úloha 3
-- [ ] Vytvořte program pro transformaci a zobrazení drátového modelu jednoduché grafické prostorové scény složené alespoň ze dvou těles (např. kvádr, jehlan, pravidelný čtyřstěn, …).
-- [ ] Implementujte transformace posunutí, otočení a změnu měřítka.
-- [ ] Implementujte perspektivní i paralelní projekci.
-- [ ] Implementujte pohledovou transformaci.
-- [ ] Použijte skládání transformací pomocí násobení matic, využijte aktuální verzi knihovny transforms!
-- [ ] Soustřeďte se na správné ořezávání jednotlivých hran.
-- [ ] Implementujte interaktivní ovládání myší (rozhlížení) a klávesnicí (WSAD), především u definice kamery (třída Camera v transforms).
-- [ ] Pro kontrolu projekce je vhodné zobrazovat osy souřadnicového systému scény jako objekt scény (tři úsečky), transformovaný zvolenou projekční a pohledovou maticí.
-- [ ] Doplňte program o zobrazení zadané parametrické křivky definované v kartézských, sférických nebo cylindrických souřadnicích.
-- [ ] Doplňte předcházející program pro vykreslení hladkých křivek (Fergusonova, Bézierova a Coonsova kubika) pomocí zadaných čtyř pevných řídících bodů. Použijte definice kubik pomocí matic! Koncové body umístěte ve význačných bodech zvoleného tělesa, například v protilehlých vrcholech krychle. Ostatní body umístěte tak, aby bylo vidět zakřivení křivky v prostoru.
+- [X] Vytvořte program pro transformaci a zobrazení drátového modelu jednoduché grafické prostorové scény složené alespoň ze dvou těles (např. kvádr, jehlan, pravidelný čtyřstěn, …).
+- [X] Implementujte transformace posunutí, otočení a změnu měřítka.
+- [X] Implementujte perspektivní i paralelní projekci.
+- [X] Implementujte pohledovou transformaci.
+- [X] Použijte skládání transformací pomocí násobení matic, využijte aktuální verzi knihovny transforms!
+- [X] Soustřeďte se na správné ořezávání jednotlivých hran.
+- [X] Implementujte interaktivní ovládání myší (rozhlížení) a klávesnicí (WSAD), především u definice kamery (třída Camera v transforms).
+- [X] Pro kontrolu projekce je vhodné zobrazovat osy souřadnicového systému scény jako objekt scény (tři úsečky), transformovaný zvolenou projekční a pohledovou maticí.
+- [X] Doplňte program o zobrazení zadané parametrické křivky definované v kartézských, sférických nebo cylindrických souřadnicích.
+- [X] Doplňte předcházející program pro vykreslení hladkých křivek (Fergusonova, Bézierova a Coonsova kubika) pomocí zadaných čtyř pevných řídících bodů. Použijte definice kubik pomocí matic! Koncové body umístěte ve význačných bodech zvoleného tělesa, například v protilehlých vrcholech krychle. Ostatní body umístěte tak, aby bylo vidět zakřivení křivky v prostoru.
 - [ ] **Bonus:** rozšiřte počet řídících bodů na šest. Pokuste se o hladké napojení navazujících křivek. 
 
 ## Ovládání
-### Úlohy
+## 3D Controller
+Pro úlohu 3 je potřeba v _AppStart_ vyměnit **Controller** za **Controller3D**
+### Klávesnice
+- **W A S D** - slouží k standardnímu pohybu vpřed, vzad a do stran
+- **Q E** - slouží k otáčení doleva a doprava
+- **Shift Control** - slouží k pohybu nahoru a dolu
+- **I K J L** - alternativně **šipky** slouží k natáčení nahoru, dolu, doleva a doprava
+### Myš
+- **Levé tlačítko myši** - slouží k natáčení nahoru, dolu, doleva a doprava
+- **Pravé tlačítko myši** - slouží k pohybu do stran a nahoru a dolu
+- **Kolečko myši** - slouží k pohybu dopředu a dozadu  
+
+## 2D Controller
+Pro úlohy 1 a 2 je potřeba v _AppStart_ vyměnit **Controller3D** za **Controller**
+#### Úlohy
 Ovládíní je připraveno jako volba typu úlohy a jednoduché klikání myší. Nejprve je tedy potřeba zvolit číslo úlohy, následně podle pokynů levým a pravým klikáním myši provádět akce.
 - *mezerník* - Vyčištění plátna.
 - *0* - Čára ze středu
@@ -69,7 +83,7 @@ Ovládíní je připraveno jako volba typu úlohy a jednoduché klikání myší
 Pokud by jste se ve kteroukoliv chvíli dostali do situace, kdy vám program neumožní pokračovat v zadávání,
 stiskněte mezerník a zkuste objekt zadat znovu.
 
-### Barvy
+#### Barvy
 Po dlouhém zvažování jak umožnit uživateli kreslit jím zvolenou barvou jsem došel k návrhu míchání barev. Stiskem klávesy se zvolí jedna ze základních barev a pomocí + a - se nastaví její hodnota. Zvolená barva a výsledek míchání se zobrazují jako dva malé sousedící čtverečky v pravém horním rohu obrazovky.
 - **r** - červená barva
 - **g** - zelená barva
