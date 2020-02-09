@@ -5,8 +5,9 @@ import transforms.Point3D;
 import java.awt.*;
 
 public class Cube extends Solid {
-    public Cube(Color color) {
+    public Cube(Color color, int thickness) {
         this.color = color;
+        this.thickness = thickness;
         // nejprve vytvořím body které reprezentují kryc
         // -v- spodní podstava
         vertices.add(new Point3D(-1,-1,-1));
@@ -27,6 +28,6 @@ public class Cube extends Solid {
     }
 
     public Cube() {
-        this(Color.RED);    //voláme honstruktor this(Color color)
+        this(Color.RED,1);    //voláme konstruktor this(Color color)
     }
 }

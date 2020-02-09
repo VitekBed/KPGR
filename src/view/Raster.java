@@ -72,7 +72,11 @@ public class Raster extends JPanel {
         g.setColor(color);
         g.drawLine((int)Math.round(x),(int)Math.round(y),(int)Math.round(x1),(int)Math.round(y1));
     }
-
+    public void drawLine(double x, double y, double x1, double y1, Color color, int thickness) {
+        ((Graphics2D)g).setStroke(new BasicStroke(thickness));
+        drawLine(x, y, x1, y1, color);
+        ((Graphics2D)g).setStroke(new BasicStroke(1));
+    }
     public void drawRectangle(int x, int y, int x1, int y1, Color color) {  //VBE #9
 
         g.setColor(color);
