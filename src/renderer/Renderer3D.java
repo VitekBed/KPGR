@@ -29,26 +29,25 @@ public class Renderer3D implements GPURenderer {
 
     @Override
     public void draw(Solid... solids) {
-        complete = model.mul(view).mul(projection);
+        complete = view.mul(projection);
         for (Solid solid : solids) {
             List<Integer> indices = solid.getIndices();
             List<Point3D> vertices = solid.getVertices();
+            Mat4 transformarion = solid.getTransformation().mul(complete);
             for (int i = 0; i < indices.size(); i+=2)
             {
                 Point3D a = vertices.get(indices.get(i));
                 Point3D b = vertices.get(indices.get(1 + i));
-                transformLine(a,b,Color.ORANGE);
+                transformLine(transformarion, a,b,solid.getColor(),solid.getThickness());
             }
         }
     }
-    private void transformLine(Point3D a, Point3D b)
+    private void transformLine(Mat4 transformation, Point3D a, Point3D b){transformLine(transformation,a,b,Color.BLACK);}
+    private void transformLine(Mat4 transformation, Point3D a, Point3D b, Color color) { transformLine(transformation,a,b,color,1);}
+    private void transformLine(Mat4 transformation, Point3D a, Point3D b, Color color, int thickness)
     {
-        transformLine(a,b,Color.BLACK);
-    }
-    private void transformLine(Point3D a, Point3D b, Color color)   //pozor, tato metoda nejen transformuje, ale i vykresluje!
-    {
-        a = a.mul(complete);    //a = a.mul(model).mul(view).mul(projection);
-        b = b.mul(complete);
+        a = a.mul(transformation);    //a = a.mul(model).mul(view).mul(projection);
+        b = b.mul(transformation);
         if (clip(a) || clip(b)) return;
 
         Optional<Vec3D> dehomogA = a.dehomog(); //dehomogenizujeme
@@ -63,7 +62,7 @@ public class Renderer3D implements GPURenderer {
         v1 = tranformToWindow(v1);
         v2 = tranformToWindow(v2);
 
-        raster.drawLine(v1.getX(),v1.getY(),v2.getX(),v2.getY(), color);
+        raster.drawLine(v1.getX(),v1.getY(),v2.getX(),v2.getY(), color, thickness);
     }
 
     private boolean clip(Point3D p) {
