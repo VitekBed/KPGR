@@ -3,7 +3,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseMotionListener;
+//import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
