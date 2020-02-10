@@ -48,7 +48,7 @@ public class Renderer3D implements GPURenderer {
     {
         a = a.mul(transformation);    //a = a.mul(model).mul(view).mul(projection);
         b = b.mul(transformation);
-        if (clip(a) || clip(b)) return;   //pokud chci zahazovat
+        if (clip(a) || clip(b)) return;
 
         Optional<Vec3D> dehomogA = a.dehomog(); //dehomogenizujeme
         Optional<Vec3D> dehomogB = b.dehomog();
